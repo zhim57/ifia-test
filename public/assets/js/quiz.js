@@ -135,6 +135,7 @@ validateAnswer = () => {
   if (document.querySelector(".questions .active")) {
     // everything is fine, check if the answer is correct or not
     checkAnswer();
+
   } else {
     // error, the user didn't select anything
     const errorDiv = document.createElement("div");
@@ -159,6 +160,18 @@ checkAnswer = () => {
     correctNumber++;
   } else {
     incorrectNumber++;
+
+    const correctDiv = document.createElement("div");
+    correctDiv.classList.add("alert", "alert-danger", "col-md-6");
+    correctDiv.textContent = correctAnswer;
+    // select the questions div to insert the alert
+    const questionsDiv = document.querySelector(".questions");
+    questionsDiv.appendChild(correctDiv);
+    
+    setTimeout(() => {
+      document.querySelector(".alert-danger").remove();
+    }, 5000);
+    
   }
   // save into localstorage
   saveIntoStorage();
