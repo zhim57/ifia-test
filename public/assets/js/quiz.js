@@ -92,7 +92,7 @@ displayQuestion = (questions) => {
                          <span class="badge badge-danger">${incorrectNumber}</span>
                     </div>
                </div>
-               <h2 class="text-center">${question.ifia_number} : ${question.question}
+               <h2 id="question" class="text-center">${question.ifia_number} : ${question.question}
 
           `;
 
@@ -189,14 +189,14 @@ checkAnswer = () => {
     saveIntoStorage();
     
     // clear previous HTML
-    const app = document.querySelector("#app");
-    while (app.firstChild) {
-    app.removeChild(app.firstChild);
+    const question1 = document.querySelector("#question");
+    while (question1.firstChild) {
+      question1.removeChild(question1.firstChild);
     }
     
     // load a new question
     loadQuestionJA();
-    }, 2500);
+    }, 3000);
   }
   
   
