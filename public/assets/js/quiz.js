@@ -177,8 +177,8 @@ checkAnswer = () => {
     correctDiv.classList.add("alert", "alert-danger", "col-md-6");
     correctDiv.textContent = correctAnswer;
     // select the questions div to insert the alert
-    const questionsDiv = document.querySelector(".questions");
-    questionsDiv.appendChild(correctDiv);
+    const questionDiv = document.querySelector(".question");
+    questionDiv.appendChild(correctDiv);
 
    
     
@@ -189,9 +189,9 @@ checkAnswer = () => {
     saveIntoStorage();
     
     // clear previous HTML
-    const question1 = document.querySelector("#question");
-    while (question1.firstChild) {
-      question1.removeChild(question1.firstChild);
+    const app = document.querySelector("#app");
+    while (app.firstChild) {
+      app.removeChild(app.firstChild);
     }
     
     // load a new question
