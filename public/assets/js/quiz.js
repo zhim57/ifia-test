@@ -167,23 +167,25 @@ checkAnswer = () => {
     // select the questions div to insert the alert
     const questionsDiv = document.querySelector(".questions");
     questionsDiv.appendChild(correctDiv);
-    
-    setTimeout(() => {
-      document.querySelector(".alert-danger").remove();
-    }, 5000);
+
+   
     
   }
-  // save into localstorage
-  saveIntoStorage();
+  setTimeout(() => {
+    document.querySelector(".alert-danger").remove();
 
-  // clear previous HTML
-  const app = document.querySelector("#app");
-  while (app.firstChild) {
-    app.removeChild(app.firstChild);
-  }
-
-  // load a new question
-  loadQuestionJA();
+    // save into localstorage
+    saveIntoStorage();
+  
+    // clear previous HTML
+    const app = document.querySelector("#app");
+    while (app.firstChild) {
+      app.removeChild(app.firstChild);
+    }
+  
+    // load a new question
+    loadQuestionJA();
+  }, 5000);
 };
 
 // saves correct or incorrect totals in storage
