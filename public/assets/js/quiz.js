@@ -170,22 +170,22 @@ checkAnswer = () => {
 
    
     
+    setTimeout(() => {
+      document.querySelector(".alert-danger").remove();
+      
+    }, 3500);
   }
-  setTimeout(() => {
-    document.querySelector(".alert-danger").remove();
-      // save into localstorage
-  saveIntoStorage();
+  // save into localstorage
+saveIntoStorage();
 
-  // clear previous HTML
-  const app = document.querySelector("#app");
-  while (app.firstChild) {
-    app.removeChild(app.firstChild);
-  }
+// clear previous HTML
+const app = document.querySelector("#app");
+while (app.firstChild) {
+app.removeChild(app.firstChild);
+}
 
-  // load a new question
-  loadQuestionJA();
-
-  }, 3500);
+// load a new question
+loadQuestionJA();
   
   
 };
