@@ -158,6 +158,18 @@ checkAnswer = () => {
 
   if (userAnswer.textContent === correctAnswer) {
     correctNumber++;
+      // save into localstorage
+      saveIntoStorage();
+    
+      // clear previous HTML
+      const app = document.querySelector("#app");
+      while (app.firstChild) {
+      app.removeChild(app.firstChild);
+      }
+      
+      // load a new question
+      loadQuestionJA();
+
   } else {
     incorrectNumber++;
 
@@ -173,19 +185,19 @@ checkAnswer = () => {
     setTimeout(() => {
       document.querySelector(".alert-danger").remove();
       
+      // save into localstorage
+    saveIntoStorage();
+    
+    // clear previous HTML
+    const app = document.querySelector("#app");
+    while (app.firstChild) {
+    app.removeChild(app.firstChild);
+    }
+    
+    // load a new question
+    loadQuestionJA();
     }, 3500);
   }
-  // save into localstorage
-saveIntoStorage();
-
-// clear previous HTML
-const app = document.querySelector("#app");
-while (app.firstChild) {
-app.removeChild(app.firstChild);
-}
-
-// load a new question
-loadQuestionJA();
   
   
 };
