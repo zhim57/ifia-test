@@ -1,7 +1,7 @@
 ### Schema
 
-CREATE DATABASE ifia_db;
-USE ifia_db;
+
+USE kk4zlkdezqtk5us3;
 
 CREATE TABLE questions
 (

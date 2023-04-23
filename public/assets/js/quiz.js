@@ -1,11 +1,8 @@
 let correctAnswer,
-  correctNumber = localStorage.getItem("quiz_game_correct")
-    ? localStorage.getItem("quiz_game_correct")
-    : 0,
-  incorrectNumber = localStorage.getItem("quiz_game_incorrect")
-    ? localStorage.getItem("quiz_game_incorrect")
-    : 0;
-let nextQuestion = 1;
+  correctNumber = localStorage.getItem("quiz_game_correct")    ? localStorage.getItem("quiz_game_correct")    : 0,
+  incorrectNumber = localStorage.getItem("quiz_game_incorrect")    ? localStorage.getItem("quiz_game_incorrect")    : 0,
+  nextQuestion = localStorage.getItem("quiz_nextQuestion")    ? localStorage.getItem("quiz_nextQuestion")    : 0;
+
 let dudu;
 
 loadQuestionJA = () => {
@@ -180,6 +177,7 @@ checkAnswer = () => {
 saveIntoStorage = () => {
   localStorage.setItem("quiz_game_correct", correctNumber);
   localStorage.setItem("quiz_game_incorrect", incorrectNumber);
+  localStorage.setItem("quiz_nextQuestion", nextQuestion);
 };
 
 // Clears the results from storage
@@ -187,6 +185,7 @@ saveIntoStorage = () => {
 clearResults = () => {
   localStorage.setItem("quiz_game_correct", 0);
   localStorage.setItem("quiz_game_incorrect", 0);
+  localStorage.setItem("quiz_nextQuestion", 0);
 
   setTimeout(() => {
     window.location.reload();
