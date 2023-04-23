@@ -174,18 +174,19 @@ checkAnswer = () => {
   setTimeout(() => {
     document.querySelector(".alert-danger").remove();
 
-    // save into localstorage
-    saveIntoStorage();
+  }, 3000);
   
-    // clear previous HTML
-    const app = document.querySelector("#app");
-    while (app.firstChild) {
-      app.removeChild(app.firstChild);
-    }
-  
-    // load a new question
-    loadQuestionJA();
-  }, 5000);
+  // save into localstorage
+  saveIntoStorage();
+
+  // clear previous HTML
+  const app = document.querySelector("#app");
+  while (app.firstChild) {
+    app.removeChild(app.firstChild);
+  }
+
+  // load a new question
+  loadQuestionJA();
 };
 
 // saves correct or incorrect totals in storage
