@@ -177,7 +177,7 @@ checkAnswer = () => {
     correctDiv.classList.add("alert", "alert-danger", "col-md-6");
     correctDiv.textContent = correctAnswer;
     // select the questions div to insert the alert
-    const questionDiv = document.querySelector(".question");
+    const questionDiv = document.querySelector("#question");
     questionDiv.appendChild(correctDiv);
 
    
