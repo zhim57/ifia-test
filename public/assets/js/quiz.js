@@ -173,10 +173,7 @@ checkAnswer = () => {
   }
   setTimeout(() => {
     document.querySelector(".alert-danger").remove();
-
-  }, 3000);
-  
-  // save into localstorage
+      // save into localstorage
   saveIntoStorage();
 
   // clear previous HTML
@@ -187,6 +184,10 @@ checkAnswer = () => {
 
   // load a new question
   loadQuestionJA();
+
+  }, 3500);
+  
+  
 };
 
 // saves correct or incorrect totals in storage
