@@ -196,7 +196,7 @@ checkAnswer = () => {
     
     // load a new question
     loadQuestionJA();
-    }, 3500);
+    }, 2500);
   }
   
   
