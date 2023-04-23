@@ -35,7 +35,7 @@ loadQuestionJA = () => {
 
 document.addEventListener("DOMContentLoaded", function () {
   // loadQuestion();
-  // loadQuestionJA()
+  loadQuestionJA()
   eventListeners();
 });
 
@@ -48,7 +48,7 @@ eventListeners = () => {
     .addEventListener("click", clearResults);
 };
 
-document.querySelector("#start").addEventListener("click", loadQuestionJA);
+// document.querySelector("#start").addEventListener("click", loadQuestionJA);
 
 // loads a new question from an API
 // loadQuestion = () => {
