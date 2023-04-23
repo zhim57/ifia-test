@@ -28,7 +28,7 @@ loadQuestionJA = () => {
   }).then((response) => {
     dudu = response;
 
-    nextQuestion = nextQuestion + 1;
+    nextQuestion ++;
     displayQuestion(dudu);
   });
 };
