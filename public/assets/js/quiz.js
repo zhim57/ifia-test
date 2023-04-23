@@ -6,10 +6,10 @@ let correctAnswer,
 let dudu;
 
 loadQuestionJA = () => {
-  let retrievedObject1 = localStorage.getItem("requestPortable");
-  let retrievedObject2 = JSON.parse(retrievedObject1);
+  // let retrievedObject1 = localStorage.getItem("requestPortable");
+  // let retrievedObject2 = JSON.parse(retrievedObject1);
 
-  let id = nextQuestion || retrievedObject2.condition || 1;
+  let id = nextQuestion || 1;
   let condition = "id =" + id;
   let table = "questions";
 
@@ -18,7 +18,7 @@ loadQuestionJA = () => {
     culprit: "line41_quiz.js",
     condition: condition,
   };
-  localStorage.setItem("requestPortable", JSON.stringify(requestPortable));
+  // localStorage.setItem("requestPortable", JSON.stringify(requestPortable));
 
   // Send the GET request.
   $.ajax("/api/questions01/", {
