@@ -214,7 +214,7 @@ saveIntoStorage = () => {
 clearResults = () => {
   localStorage.setItem("quiz_game_correct", 0);
   localStorage.setItem("quiz_game_incorrect", 0);
-  localStorage.setItem("quiz_nextQuestion", 0);
+  localStorage.setItem("quiz_nextQuestion", 1);
 
   setTimeout(() => {
     window.location.reload();
