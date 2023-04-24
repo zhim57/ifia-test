@@ -1,9 +1,12 @@
 let correctAnswer,
   correctNumber = localStorage.getItem("quiz_game_correct")    ? localStorage.getItem("quiz_game_correct")    : 0,
   incorrectNumber = localStorage.getItem("quiz_game_incorrect")    ? localStorage.getItem("quiz_game_incorrect")    : 0,
-  nextQuestion = localStorage.getItem("quiz_nextQuestion")    ? localStorage.getItem("quiz_nextQuestion")    : 0;
+  nextQuestion = localStorage.getItem("quiz_nextQuestion")    ? localStorage.getItem("quiz_nextQuestion")    : 0,
+  wrongAnswers = JSON.parse(localStorage.getItem("quiz_nextQuestion"))    ? JSON.parse(localStorage.getItem("quiz_nextQuestion"))    : 0;
 
 let dudu;
+let wrongAnswer 
+
 
 loadQuestionJA = () => {
   // let retrievedObject1 = localStorage.getItem("requestPortable");
@@ -66,7 +69,10 @@ eventListeners = () => {
 // displays the question HTML from API
 
 showResults= () => {
-  console.log("next question is : " + nextQuestion + ",   so far : " + (correctNumber/(nextQuestion-2)*100).toFixed(2) + "  % ")
+  console.log("next question is : " + nextQuestion + ",   so far : " + (correctNumber/(nextQuestion-2)*100).toFixed(2) + "  % ");
+  for (let k=0; k<wrongAnswers.length-1; k++){
+    console.log( JSON.stringify(wrongAnswers[k]));
+  };
 
 }
 displayQuestion = (questions) => {
@@ -82,6 +88,9 @@ displayQuestion = (questions) => {
   possibleAnswers.push(questions[0].answer_b);
   possibleAnswers.push(questions[0].answer_c);
   possibleAnswers.push(questions[0].answer_d);
+
+  wrongAnswer= questions[0];
+  }
 
   questions.forEach((question) => {
     // read the correct answer
@@ -180,6 +189,8 @@ checkAnswer = () => {
   } else {
     incorrectNumber++;
 
+    wrongAnswers.push(wrongAnswer);
+
     const correctDiv = document.createElement("div");
     correctDiv.classList.add("alert", "alert-danger", "col-md-6");
     correctDiv.textContent = correctAnswer;
@@ -214,6 +225,7 @@ saveIntoStorage = () => {
   localStorage.setItem("quiz_game_correct", correctNumber);
   localStorage.setItem("quiz_game_incorrect", incorrectNumber);
   localStorage.setItem("quiz_nextQuestion", nextQuestion);
+  localStorage.setItem("quiz_wrong_questions", JSON.stringify(wrongAnswers));
 };
 
 // Clears the results from storage
@@ -222,6 +234,8 @@ clearResults = () => {
   localStorage.setItem("quiz_game_correct", 0);
   localStorage.setItem("quiz_game_incorrect", 0);
   localStorage.setItem("quiz_nextQuestion", 1);
+  wrongAnswers=[];
+  localStorage.setItem("quiz_wrong_questions", JSON.stringify(wrongAnswers));
 
   setTimeout(() => {
     window.location.reload();
