@@ -71,7 +71,13 @@ eventListeners = () => {
 showResults= () => {
   console.log("next question is : " + nextQuestion + ",   so far : " + (correctNumber/(nextQuestion-2)*100).toFixed(2) + "  % ");
 
-
+  const correctDiv = document.createElement("div");
+    correctDiv.classList.add( "alert-results", "col-md-12");
+    correctDiv.textContent = `
+    next question is :  ${nextQuestion}, so far : ${(correctNumber/(nextQuestion-2)*100).toFixed(2) } % ` ;
+    // select the questions div to insert the alert
+    let appDiv = document.querySelector("#app");
+     appDiv.appendChild(correctDiv);
 
   for (let k=0; k < wrongAnswers.length; k++){
     let answer1 = (wrongAnswers[k].ifia_number + " : " +  wrongAnswers[k].answer_correct );
@@ -92,13 +98,7 @@ showResults= () => {
    // render in the HTML
    correctDiv.appendChild(questionHTML);
 
-  const correctDiv = document.createElement("div");
-    correctDiv.classList.add( "alert-results", "col-md-12");
-    correctDiv.textContent = `
-    next question is :  ${nextQuestion}, so far : ${(correctNumber/(nextQuestion-2)*100).toFixed(2) } % ` ;
-    // select the questions div to insert the alert
-    let appDiv = document.querySelector("#app");
- appDiv.appendChild(correctDiv);
+
 
     
     setTimeout(() => {
