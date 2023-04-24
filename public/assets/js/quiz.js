@@ -2,7 +2,7 @@ let correctAnswer,
   correctNumber = localStorage.getItem("quiz_game_correct")    ? localStorage.getItem("quiz_game_correct")    : 0,
   incorrectNumber = localStorage.getItem("quiz_game_incorrect")    ? localStorage.getItem("quiz_game_incorrect")    : 0,
   nextQuestion = localStorage.getItem("quiz_nextQuestion")    ? localStorage.getItem("quiz_nextQuestion")    : 0,
-  wrongAnswers = JSON.parse(localStorage.getItem("quiz_nextQuestion"))    ? JSON.parse(localStorage.getItem("quiz_nextQuestion"))    : 0;
+  wrongAnswers = JSON.parse(localStorage.getItem("quiz_nextQuestion"))    ? JSON.parse(localStorage.getItem("quiz_nextQuestion"))    :[];
 
 let dudu;
 let wrongAnswer 
