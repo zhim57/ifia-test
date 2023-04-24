@@ -104,7 +104,7 @@ showResults= () => {
     
     setTimeout(() => {
       document.querySelector(".alert-results").remove();
-    },5000);
+    },10000);
 }
 displayQuestion = (questions) => {
   let possibleAnswers = [];
