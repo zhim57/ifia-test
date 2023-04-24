@@ -65,7 +65,7 @@ eventListeners = () => {
 
 // displays the question HTML from API
 
-showResults= (nextQuestion) => {
+showResults= () => {
   console.log("next question is" + nextQuestion + "so far : " + correctNumber/nextQuestion + " % ")
 
 }
