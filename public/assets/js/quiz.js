@@ -7,7 +7,7 @@ let correctAnswer,
 let dudu;
 let answer = {};
 
-console.log(wrongAnswers);
+// console.log(wrongAnswers);
 loadQuestionJA = () => {
   // let retrievedObject1 = localStorage.getItem("requestPortable");
   // let retrievedObject2 = JSON.parse(retrievedObject1);
@@ -74,7 +74,7 @@ showResults= () => {
     console.log( (wrongAnswers[k].ifia_number + " : " +  wrongAnswers[k].answer_correct ));
   };
 
-  console.log (wrongAnswers);
+  // console.log (wrongAnswers);
 
 }
 displayQuestion = (questions) => {
