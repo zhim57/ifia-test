@@ -7,7 +7,7 @@ let correctAnswer,
 let dudu;
 let answer = {};
 
-
+console.log(wrongAnswers);
 loadQuestionJA = () => {
   // let retrievedObject1 = localStorage.getItem("requestPortable");
   // let retrievedObject2 = JSON.parse(retrievedObject1);
@@ -90,7 +90,7 @@ displayQuestion = (questions) => {
   possibleAnswers.push(questions[0].answer_d);
 
  answer= questions[0];
- console.log(answer);
+//  console.log(answer);
   
 
   questions.forEach((question) => {
