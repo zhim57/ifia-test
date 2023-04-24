@@ -110,7 +110,7 @@ displayQuestion = (questions) => {
 
   // create the HTML Question
   const questionHTML = document.createElement("div");
-  questionHTML.classList.add("col-12, questionHTML");
+  questionHTML.classList.add("col-12", "questionHTML");
 
   correctAnswer = questions[0].answer_correct;
 
