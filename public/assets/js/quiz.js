@@ -90,7 +90,7 @@ displayQuestion = (questions) => {
   possibleAnswers.push(questions[0].answer_d);
 
   wrongAnswer= questions[0];
-  }
+  
 
   questions.forEach((question) => {
     // read the correct answer
