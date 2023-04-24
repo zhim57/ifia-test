@@ -71,7 +71,7 @@ eventListeners = () => {
 showResults= () => {
   console.log("next question is : " + nextQuestion + ",   so far : " + (correctNumber/(nextQuestion-2)*100).toFixed(2) + "  % ");
   for (let k=0; k<wrongAnswers.length-1; k++){
-    console.log( JSON.stringify(wrongAnswers[k]));
+    console.log( (wrongAnswers[k].ifia_number + " : " +  wrongAnswers[k].answer.answer_correct ));
   };
 
 }
