@@ -27,7 +27,11 @@ p.category {
 .badge {
     font-size: 2rem;
 }
+.btn-green {
+    background-color: #00796B;
+}
 .btn-primary,
+.btn-green,
 .btn-danger {
     color: white!important;
     font-size: 1.2rem;

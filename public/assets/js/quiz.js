@@ -46,6 +46,9 @@ eventListeners = () => {
   document
     .querySelector("#clear-storage")
     .addEventListener("click", clearResults);
+    document
+    .querySelector("#show-results")
+    .addEventListener("click", showResults);
 };
 
 // document.querySelector("#start").addEventListener("click", loadQuestionJA);
@@ -62,6 +65,10 @@ eventListeners = () => {
 
 // displays the question HTML from API
 
+showResults= (nextQuestion) => {
+  console.log("next question is" + nextQuestion + "so far : " + correctNumber/nextQuestion + " % ")
+
+}
 displayQuestion = (questions) => {
   let possibleAnswers = [];
 
