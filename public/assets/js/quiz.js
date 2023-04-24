@@ -70,9 +70,27 @@ eventListeners = () => {
 
 showResults= () => {
   console.log("next question is : " + nextQuestion + ",   so far : " + (correctNumber/(nextQuestion-2)*100).toFixed(2) + "  % ");
+
+
+
   for (let k=0; k < wrongAnswers.length; k++){
-    console.log( (wrongAnswers[k].ifia_number + " : " +  wrongAnswers[k].answer_correct ));
+    let answer1 = (wrongAnswers[k].ifia_number + " : " +  wrongAnswers[k].answer_correct );
+       // generate the HTML for possible answers
+   let wrongAnswerDiv = document.createElement("div");
+   wrongAnswerDiv.classList.add(
+     "wrongs",
+     "row"
+          
+   );
+
+   let answerHTML = document.createElement("li");
+    answerHTML.classList.add("col-12");
+    answerHTML.textContent = answer1;
+    wrongAnswerDiv.appendChild(answerHTML);
+    questionHTML.appendChild(wrongAnswerDiv);
   };
+   // render in the HTML
+   correctDiv.appendChild(questionHTML);
 
   const correctDiv = document.createElement("div");
     correctDiv.classList.add( "alert-results", "col-md-12");
@@ -82,7 +100,6 @@ showResults= () => {
     let appDiv = document.querySelector("#app");
  appDiv.appendChild(correctDiv);
 
-   
     
     setTimeout(() => {
       document.querySelector(".alert-results").remove();
