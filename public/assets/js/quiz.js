@@ -72,7 +72,7 @@ showResults= () => {
   console.log("next question is : " + nextQuestion + ",   so far : " + (correctNumber/(nextQuestion-2)*100).toFixed(2) + "  % ");
 
   const correctDiv = document.createElement("div");
-    correctDiv.classList.add( "alert-results", "col-md-12");
+    correctDiv.classList.add( "alert-results", "col-md-12","wrongs");
     correctDiv.textContent = `
     next question is :  ${nextQuestion}, so far : ${(correctNumber/(nextQuestion-2)*100).toFixed(2) } % 
      List of the wrong items so far: ` ;
