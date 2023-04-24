@@ -93,10 +93,10 @@ showResults= () => {
     answerHTML.classList.add("col-12");
     answerHTML.textContent = answer1;
     wrongAnswerDiv.appendChild(answerHTML);
-    document.querySelector(".questionHTML").appendChild(wrongAnswerDiv);
+    correctDiv.appendChild(wrongAnswerDiv);
   };
    // render in the HTML
-   correctDiv.appendChild(questionHTML);
+  //  correctDiv.appendChild(questionHTML);
 
 
 
