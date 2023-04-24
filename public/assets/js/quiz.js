@@ -87,7 +87,7 @@ showResults= () => {
     answerHTML.classList.add("col-12");
     answerHTML.textContent = answer1;
     wrongAnswerDiv.appendChild(answerHTML);
-    questionHTML.appendChild(wrongAnswerDiv);
+    document.querySelector(".questionHTML").appendChild(wrongAnswerDiv);
   };
    // render in the HTML
    correctDiv.appendChild(questionHTML);
@@ -110,7 +110,7 @@ displayQuestion = (questions) => {
 
   // create the HTML Question
   const questionHTML = document.createElement("div");
-  questionHTML.classList.add("col-12");
+  questionHTML.classList.add("col-12, questionHTML");
 
   correctAnswer = questions[0].answer_correct;
 
