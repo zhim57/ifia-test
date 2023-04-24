@@ -2,10 +2,10 @@ let correctAnswer,
   correctNumber = localStorage.getItem("quiz_game_correct")    ? localStorage.getItem("quiz_game_correct")    : 0,
   incorrectNumber = localStorage.getItem("quiz_game_incorrect")    ? localStorage.getItem("quiz_game_incorrect")    : 0,
   nextQuestion = localStorage.getItem("quiz_nextQuestion")    ? localStorage.getItem("quiz_nextQuestion")    : 0,
-  wrongAnswers = JSON.parse(localStorage.getItem("quiz_nextQuestion"))    ? JSON.parse(localStorage.getItem("quiz_nextQuestion"))    :[];
+  wrongAnswers = JSON.parse(localStorage.getItem("quiz_wrong_questions"))    ? JSON.parse(localStorage.getItem("quiz_wrong_questions"))    :[];
 
 let dudu;
-let wrongAnswer 
+let answer = {};
 
 
 loadQuestionJA = () => {
@@ -89,7 +89,8 @@ displayQuestion = (questions) => {
   possibleAnswers.push(questions[0].answer_c);
   possibleAnswers.push(questions[0].answer_d);
 
-  wrongAnswer= questions[0];
+ answer= questions[0];
+ console.log(answer);
   
 
   questions.forEach((question) => {
@@ -189,7 +190,7 @@ checkAnswer = () => {
   } else {
     incorrectNumber++;
 
-    wrongAnswers.push(wrongAnswer);
+    wrongAnswers.push(answer);
 
     const correctDiv = document.createElement("div");
     correctDiv.classList.add("alert", "alert-danger", "col-md-6");
