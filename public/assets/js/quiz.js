@@ -116,7 +116,7 @@ displayQuestion = (questions) => {
 
   answer = questions[0];
   //  console.log(answer);
-  if (questions[0].section != "end score"){
+  if (nextQuestion != 515){
 
 
     questions.forEach((question) => {
@@ -162,7 +162,7 @@ displayQuestion = (questions) => {
   });
 
 }
-else if (questions[0].section == "End score"){
+else if (nextQuestion === 515){
 console.log("End score");
   questions.forEach((question) => {
     // read the correct answer
