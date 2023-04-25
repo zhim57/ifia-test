@@ -162,7 +162,7 @@ displayQuestion = (questions) => {
   });
 
 }
-else if (questions[0].section === "end score"){
+else if (questions[0].section === "End score"){
 
   questions.forEach((question) => {
     // read the correct answer
