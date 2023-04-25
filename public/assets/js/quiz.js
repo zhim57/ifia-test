@@ -36,9 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 eventListeners = () => {
-  document
-    .querySelector("#check-answer")
-    .addEventListener("click", validateAnswer);
+  // document
+  //   .querySelector("#check-answer")
+  //   .addEventListener("click", validateAnswer);
   document
     .querySelector("#clear-storage")
     .addEventListener("click", clearResults);
