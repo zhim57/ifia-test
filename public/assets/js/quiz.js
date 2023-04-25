@@ -163,7 +163,7 @@ displayQuestion = (questions) => {
 
 }
 else if (questions[0].section == "End score"){
-
+console.log("End score");
   questions.forEach((question) => {
     // read the correct answer
     // correctAnswer = question.correct_answer;
