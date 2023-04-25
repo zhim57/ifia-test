@@ -67,7 +67,7 @@ showResults= () => {
   const correctDiv = document.createElement("div");
     correctDiv.classList.add( "alert-results", "col-md-12","wrongs");
     correctDiv.textContent = `
-    Answered ${nextQuestion-1} questions, ${514-(nextQuestion-1)} remaining .   Score: ${(correctNumber/(nextQuestion-2)*100).toFixed(2) } % ${<br></br>}
+    Answered ${nextQuestion-1} questions, ${514-(nextQuestion-1)} remaining .   Score: ${(correctNumber/(nextQuestion-2)*100).toFixed(2) }%.   
      List of the wrong items so far: ` ;
     // select the questions div to insert the alert
     let appDiv = document.querySelector("#app");
