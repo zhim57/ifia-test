@@ -3,15 +3,11 @@ let correctAnswer,
   incorrectNumber = localStorage.getItem("quiz_game_incorrect")    ? localStorage.getItem("quiz_game_incorrect")    : 0,
   nextQuestion = localStorage.getItem("quiz_nextQuestion")    ? localStorage.getItem("quiz_nextQuestion")    : 0,
   wrongAnswers = JSON.parse(localStorage.getItem("quiz_wrong_questions"))    ? JSON.parse(localStorage.getItem("quiz_wrong_questions"))    :[];
-
 let dudu;
 let answer = {};
 
-// console.log(wrongAnswers);
-loadQuestionJA = () => {
-  // let retrievedObject1 = localStorage.getItem("requestPortable");
-  // let retrievedObject2 = JSON.parse(retrievedObject1);
 
+loadQuestionJA = () => {
   let id = nextQuestion || 1;
   let condition = "id =" + id;
   let table = "questions";
@@ -21,9 +17,7 @@ loadQuestionJA = () => {
     culprit: "line41_quiz.js",
     condition: condition,
   };
-  // localStorage.setItem("requestPortable", JSON.stringify(requestPortable));
-
-  // Send the GET request.
+   // Send the GET request.
   $.ajax("/api/questions01/", {
     //to be updatet to "/api/questions01/"
     type: "GET",
@@ -37,7 +31,6 @@ loadQuestionJA = () => {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-  // loadQuestion();
   loadQuestionJA()
   eventListeners();
 });
@@ -176,6 +169,7 @@ selectAnswer = (e) => {
   }
   // adds the current answer
   e.target.classList.add("active");
+  validateAnswer()
 };
 
 // Checks if the answer is correct and 1 answer is selected
