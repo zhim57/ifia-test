@@ -180,7 +180,7 @@ console.log("End score");
                          <span class="badge badge-danger">${incorrectNumber}</span>
                     </div>
                </div>
-               <h2 id="question" class="text-center">${question.ifia_number} ,  ${question.question} :${((correctNumber / (nextQuestion - 2)) * 100).toFixed(2)}%.   
+               <h2 id="question" class="text-center">${question.ifia_number} ,  ${question.question}  ${((correctNumber / (nextQuestion - 2)) * 100).toFixed(2)}%.   
 
           `;
 
