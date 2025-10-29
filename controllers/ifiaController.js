@@ -108,7 +108,7 @@ router.delete("/api/users/:id", function (req, res) {
 });
 
 router.get("/", function (req, res) {
-  res.render("index", hbsObject8);
+  res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
 router.get("/api/questions01/", function (req, res) {
