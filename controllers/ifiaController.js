@@ -1,15 +1,9 @@
-var request = require("request");
-const https = require("https");
 var express = require("express");
 const path = require("path");
 var router = express.Router();
-// var DL_API_KEY = process.env.DL_API_KEY;
-// console.log(DL_API_KEY);
 
 var question = require("../models/question");
 var user = require("../models/user");
-const { text } = require("body-parser");
-const { createBrotliCompress } = require("zlib");
 
 // Create all our routes and set up logic within those routes where required.
 
