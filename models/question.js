@@ -14,14 +14,14 @@ var question = {
     });
   },
   // The variables cols and vals are arrays.
-  create: (cols, vals) => orm.create("vessels", cols, vals),
+  create: (cols, vals) => orm.create("questions", cols, vals),
 
   update: (objColVals, condition) =>
-    orm.update("vessels", objColVals, condition, function (res) {
+    orm.update("questions", objColVals, condition, function (res) {
       cb(res);
     }),
   delete: (condition) =>
-    orm.delete("vessels", condition, function (res) {
+    orm.delete("questions", condition, function (res) {
       cb(res);
     }),
 };
