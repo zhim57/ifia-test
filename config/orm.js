@@ -2,6 +2,17 @@
 var connection = require("../config/connection.js");
 var connectionQuery = require('util').promisify(connection.query.bind(connection));
 
+// Helper to check if database is connected
+function isDatabaseConnected() {
+  var err = connection.getConnectionError();
+  if (err) {
+    console.error("\n⚠️  Cannot execute query: Database not connected");
+    console.error("Please set up MySQL database first (see error message above)\n");
+    return false;
+  }
+  return true;
+}
+
 // Helper function for SQL syntax.
 // Let's say we want to pass 3 values into the mySQL query.
 // In order to write the query, we need 3 question marks.
@@ -44,11 +55,17 @@ function objToSql(ob) {
 // Object for all our SQL statement functions.
 var orm = {
   read: function (tableInput, cb) {
+    if (!isDatabaseConnected()) {
+      if (cb) cb([]);
+      return Promise.resolve([]);
+    }
     var queryString = "SELECT * FROM ?? ";
     // console.log("queryString for orm.read : " + queryString + tableInput);
     return connectionQuery(queryString, [tableInput], function (err, result) {
       if (err) {
-        throw err;
+        console.error("Database query error:", err.message);
+        if (cb) cb([]);
+        return;
       }
       // console.log("result received");
       cb(result);
@@ -56,14 +73,20 @@ var orm = {
   },
 
   read4: function (table, cb) {
+    if (!isDatabaseConnected()) {
+      if (cb) cb([]);
+      return Promise.resolve([]);
+    }
     var queryString = "SELECT * FROM " +table.table +"  WHERE "+ table.condition;
-    
+
     // console.log("queryString for orm.read4 : " +queryString);
     return connectionQuery(queryString, function (err, result) {
       if (err) {
-        throw err;
+        console.error("Database query error:", err.message);
+        if (cb) cb([]);
+        return;
       }
-           cb(result);
+      cb(result);
     });
 
   },
@@ -71,6 +94,9 @@ var orm = {
 
   
   create: function (table, cols, vals, cb) {
+    if (!isDatabaseConnected()) {
+      return Promise.resolve({ affectedRows: 0 });
+    }
     var queryString = "INSERT INTO ??";
 
     queryString += " (";
@@ -80,11 +106,17 @@ var orm = {
     queryString += printQuestionMarks(vals.length);
     queryString += ") ";
 
-     return connectionQuery(queryString, [table, ...vals]);
+    return connectionQuery(queryString, [table, ...vals]).catch(err => {
+      console.error("Database insert error:", err.message);
+      return { affectedRows: 0 };
+    });
   },
 
   // An example of objColVals would be {name: panther, sleepy: true}
   update: function (table, objColVals, condition, cb) {
+    if (!isDatabaseConnected()) {
+      return Promise.resolve({ affectedRows: 0 });
+    }
     var queryString = "UPDATE " + table;
 
     queryString += " SET ";
@@ -92,15 +124,23 @@ var orm = {
     queryString += " WHERE ";
     queryString += condition;
 
-    
-    return connectionQuery(queryString);
+    return connectionQuery(queryString).catch(err => {
+      console.error("Database update error:", err.message);
+      return { affectedRows: 0 };
+    });
   },
   delete: function (table, condition, cb) {
+    if (!isDatabaseConnected()) {
+      return Promise.resolve({ affectedRows: 0 });
+    }
     var queryString = "DELETE FROM " + table;
     queryString += " WHERE ";
     queryString += condition;
 
-    return connectionQuery(queryString);
+    return connectionQuery(queryString).catch(err => {
+      console.error("Database delete error:", err.message);
+      return { affectedRows: 0 };
+    });
   }
 
 };
