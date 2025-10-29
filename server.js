@@ -3,7 +3,7 @@ var express = require("express");
 const path = require("path");
 const session = require("express-session");
 
-var PORT = process.env.PORT || 8081;
+var PORT = process.env.PORT || 8082;
 dotenv.config({path: './.env'})
 
 var app = express();
