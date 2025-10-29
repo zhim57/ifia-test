@@ -60,19 +60,25 @@ mysql -u root -p ifia_db < db/schema.sql
 mysql -u root -p ifia_db < db/seeds.sql
 ```
 
-### Step 4: Update Password (if needed)
+### Step 4: Configure Environment Variables
 
-If your MySQL root password is different from `Password1`, update it in `config/connection.js`:
+Create a `.env` file in the project root directory with your database credentials:
 
-```javascript
-connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "YOUR_PASSWORD_HERE",  // Change this
-  database: "ifia_db"
-});
+```bash
+cp .env.example .env
 ```
+
+Then edit the `.env` file with your MySQL password:
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=Password1
+DB_NAME=ifia_db
+```
+
+**Important:** Replace `Password1` with your actual MySQL root password.
 
 ### Step 5: Verify Setup
 
@@ -97,10 +103,17 @@ If you prefer not to install MySQL locally, you can use a cloud database service
    - AWS RDS
    - Google Cloud SQL
 
-2. Set the `JAWSDB_URL` environment variable:
+2. Add the connection URL to your `.env` file:
+   ```env
+   JAWSDB_URL=mysql://user:password@host:port/database
+   ```
+
+   Or export it as an environment variable:
    ```bash
    export JAWSDB_URL="mysql://user:password@host:port/database"
    ```
+
+**Note:** If `JAWSDB_URL` is set, it will be used instead of the individual DB_* variables.
 
 ## Troubleshooting
 
