@@ -17,17 +17,17 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
-// Import routes and give the server access to them.
-var routes = require("./controllers/ifiaController.js");
-
-app.use(routes);
-
+// Session middleware must be before routes
 app.use(session({
   secret: "nodejs",
   resave:true,
   saveUninitialized:true
 }));
+
+// Import routes and give the server access to them.
+var routes = require("./controllers/ifiaController.js");
+
+app.use(routes);
 
 
 // Start our server so that it can begin listening to client requests.
