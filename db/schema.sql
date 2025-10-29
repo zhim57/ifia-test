@@ -1,7 +1,8 @@
 ### Schema
 
-
-USE kk4zlkdezqtk5us3;
+-- Create and use the database
+CREATE DATABASE IF NOT EXISTS ifia_db;
+USE ifia_db;
 
 CREATE TABLE questions
 (
