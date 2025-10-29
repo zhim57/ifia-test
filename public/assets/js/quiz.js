@@ -1,313 +1,407 @@
-let correctAnswer,
-  correctNumber = localStorage.getItem("quiz_game_correct")
-    ? localStorage.getItem("quiz_game_correct")
-    : 0,
-  incorrectNumber = localStorage.getItem("quiz_game_incorrect")
-    ? localStorage.getItem("quiz_game_incorrect")
-    : 0,
-  nextQuestion = localStorage.getItem("quiz_nextQuestion")
-    ? localStorage.getItem("quiz_nextQuestion")
-    : 0,
-  wrongAnswers = JSON.parse(localStorage.getItem("quiz_wrong_questions"))
-    ? JSON.parse(localStorage.getItem("quiz_wrong_questions"))
-    : [];
-let dudu;
-let answer = {};
+/**
+ * IFIA Exam Study App
+ * Mobile-first quiz application with card flip animations
+ */
 
-loadQuestionJA = () => {
-  let id = nextQuestion || 1;
-  let condition = "id =" + id;
-  let table = "questions";
-
-  let requestPortable = {
-    table: table,
-    culprit: "line41_quiz.js",
-    condition: condition,
-  };
-  // Send the GET request.
-  $.ajax("/api/questions01/", {
-    //to be updatet to "/api/questions01/"
-    type: "GET",
-    data: requestPortable,
-  }).then((response) => {
-    dudu = response;
-
-    nextQuestion++;
-    displayQuestion(dudu);
-  });
+// State Management
+const QuizState = {
+    correctAnswer: '',
+    currentQuestion: null,
+    correctNumber: parseInt(localStorage.getItem('quiz_game_correct')) || 0,
+    incorrectNumber: parseInt(localStorage.getItem('quiz_game_incorrect')) || 0,
+    nextQuestion: parseInt(localStorage.getItem('quiz_nextQuestion')) || 1,
+    wrongAnswers: JSON.parse(localStorage.getItem('quiz_wrong_questions')) || [],
+    isProcessing: false,
+    totalQuestions: 514
 };
 
-document.addEventListener("DOMContentLoaded", function () {
-  loadQuestionJA();
-  eventListeners();
+// DOM Elements Cache
+const Elements = {
+    card: null,
+    cardFront: null,
+    cardBack: null,
+    category: null,
+    questionNumber: null,
+    questionText: null,
+    answersContainer: null,
+    resultMessage: null,
+    correctAnswerDisplay: null,
+    progressBar: null,
+    currentQuestionDisplay: null,
+    totalQuestionsDisplay: null,
+    correctCount: null,
+    incorrectCount: null,
+    percentage: null,
+    showResultsBtn: null,
+    clearStorageBtn: null,
+    modal: null,
+    closeModalBtn: null
+};
+
+/**
+ * Initialize the application
+ */
+document.addEventListener('DOMContentLoaded', function() {
+    cacheDOM();
+    attachEventListeners();
+    updateScoreDisplay();
+    updateProgressBar();
+    loadQuestion();
 });
 
-eventListeners = () => {
-  // document
-  //   .querySelector("#check-answer")
-  //   .addEventListener("click", validateAnswer);
-  document
-    .querySelector("#clear-storage")
-    .addEventListener("click", clearResults);
-  document
-    .querySelector("#show-results")
-    .addEventListener("click", showResults);
-};
+/**
+ * Cache DOM elements for better performance
+ */
+function cacheDOM() {
+    Elements.card = document.getElementById('card');
+    Elements.cardFront = document.querySelector('.card-front');
+    Elements.cardBack = document.querySelector('.card-back');
+    Elements.category = document.getElementById('category');
+    Elements.questionNumber = document.getElementById('question-number');
+    Elements.questionText = document.getElementById('question-text');
+    Elements.answersContainer = document.getElementById('answers-container');
+    Elements.resultMessage = document.getElementById('result-message');
+    Elements.correctAnswerDisplay = document.getElementById('correct-answer-display');
+    Elements.progressBar = document.getElementById('progress-bar');
+    Elements.currentQuestionDisplay = document.getElementById('current-question');
+    Elements.totalQuestionsDisplay = document.getElementById('total-questions');
+    Elements.correctCount = document.getElementById('correct-count');
+    Elements.incorrectCount = document.getElementById('incorrect-count');
+    Elements.percentage = document.getElementById('percentage');
+    Elements.showResultsBtn = document.getElementById('show-results');
+    Elements.clearStorageBtn = document.getElementById('clear-storage');
+    Elements.modal = document.getElementById('results-modal');
+    Elements.closeModalBtn = document.getElementById('close-modal');
+}
 
-// document.querySelector("#start").addEventListener("click", loadQuestionJA);
-
-// loads a new question from an API
-// loadQuestion = () => {
-//      const url = 'https://opentdb.com/api.php?amount=1';
-//      fetch(url)
-//           .then(data => data.json())
-//           .then(result  =>  displayQuestion(result.results));
-// }
-
-// loads a new question from the database
-
-// displays the question HTML from API
-
-showResults = () => {
-  const correctDiv = document.createElement("div");
-  correctDiv.classList.add("alert-results", "col-md-12", "wrongs");
-  correctDiv.textContent = `
-    Answered ${nextQuestion - 1} questions, ${
-    514 - (nextQuestion - 1)
-  } remaining .   Score: ${((correctNumber / (nextQuestion - 2)) * 100).toFixed(
-    2
-  )}%.   
-     List of the wrong items so far: `;
-  // select the questions div to insert the alert
-  let appDiv = document.querySelector("#app");
-  appDiv.appendChild(correctDiv);
-
-  for (let k = 0; k < wrongAnswers.length; k++) {
-    let answer1 =
-      wrongAnswers[k].ifia_number + " : " + wrongAnswers[k].answer_correct;
-    // generate the HTML for possible answers
-    let wrongAnswerDiv = document.createElement("div");
-    wrongAnswerDiv.classList.add("wrongs", "row");
-
-    let answerHTML = document.createElement("li");
-    answerHTML.classList.add("col-12");
-    answerHTML.textContent = answer1;
-    wrongAnswerDiv.appendChild(answerHTML);
-    correctDiv.appendChild(wrongAnswerDiv);
-  }
-  // render in the HTML
-  //  correctDiv.appendChild(questionHTML);
-
-  setTimeout(() => {
-    document.querySelector(".alert-results").remove();
-  }, 5500);
-};
-displayQuestion = (questions) => {
-  let possibleAnswers = [];
-  // create the HTML Question
-  const questionHTML = document.createElement("div");
-  questionHTML.classList.add("col-12", "questionHTML");
-
-  correctAnswer = questions[0].answer_correct;
-  possibleAnswers.push(questions[0].answer_a);
-  possibleAnswers.push(questions[0].answer_b);
-  possibleAnswers.push(questions[0].answer_c);
-  possibleAnswers.push(questions[0].answer_d);
-
-  answer = questions[0];
-  //  console.log(answer);
-  if (nextQuestion != 515){
-
-
-    questions.forEach((question) => {
-      // read the correct answer
-      // correctAnswer = question.correct_answer;
-      // inject the correct answer in the possible answers
-      // let possibleAnswers = question.incorrect_answers;
-      // possibleAnswers.splice( Math.floor( Math.random() * 3 ), 0, correctAnswer );
-  
-      // add the HTML for the Current Question
-      questionHTML.innerHTML = `
-                 <div class="row justify-content-between heading">
-                      <p class="category">Category:  ${questions[0].section}</p>
-                      <div class="totals">
-                           <span class="badge badge-success">${correctNumber}</span>
-                           <span class="badge badge-danger">${incorrectNumber}</span>
-                      </div>
-                 </div>
-                 <h2 id="question" class="text-center">${question.ifia_number} : ${question.question}
-  
-            `;
-  
-    // generate the HTML for possible answers
-    const answerDiv = document.createElement("div");
-    answerDiv.classList.add(
-      "questions",
-      "row",
-      "justify-content-around",
-      "mt-4"
-    );
-    possibleAnswers.forEach((answer) => {
-      const answerHTML = document.createElement("li");
-      answerHTML.classList.add("col-12", "col-md-5");
-      answerHTML.textContent = answer;
-      // attach an event click the answer is clicked
-      answerHTML.onclick = selectAnswer;
-      answerDiv.appendChild(answerHTML);
+/**
+ * Attach event listeners
+ */
+function attachEventListeners() {
+    Elements.showResultsBtn.addEventListener('click', showResults);
+    Elements.clearStorageBtn.addEventListener('click', confirmClearResults);
+    Elements.closeModalBtn.addEventListener('click', closeModal);
+    Elements.modal.addEventListener('click', function(e) {
+        if (e.target === Elements.modal) {
+            closeModal();
+        }
     });
-    questionHTML.appendChild(answerDiv);
-
-    // render in the HTML
-    document.querySelector("#app").appendChild(questionHTML);
-  });
-
-}
-else if (nextQuestion === 515){
-console.log("End score");
-  questions.forEach((question) => {
-    // read the correct answer
-    // correctAnswer = question.correct_answer;
-    // inject the correct answer in the possible answers
-    // let possibleAnswers = question.incorrect_answers;
-    // possibleAnswers.splice( Math.floor( Math.random() * 3 ), 0, correctAnswer );
-
-    // add the HTML for the Current Question
-    questionHTML.innerHTML = `
-               <div class="row justify-content-between heading">
-                    <p class="category">Category:  ${questions[0].section}</p>
-                    <div class="totals">
-                         <span class="badge badge-success">${correctNumber}</span>
-                         <span class="badge badge-danger">${incorrectNumber}</span>
-                    </div>
-               </div>
-               <h2 id="question" class="text-center">${question.ifia_number},  ${question.question}  ${((correctNumber / (nextQuestion - 2)) * 100).toFixed(2)}%.   
-
-          `;
-
-  // generate the HTML for possible answers
-  const answerDiv = document.createElement("div");
-  answerDiv.classList.add(
-    "questions",
-    "row",
-    "justify-content-around",
-    "mt-4"
-  );
-  possibleAnswers.forEach((answer) => {
-    const answerHTML = document.createElement("li");
-    answerHTML.classList.add("col-12", "col-md-5");
-    answerHTML.textContent = answer;
-    // attach an event click the answer is clicked
-    answerHTML.onclick = selectAnswer;
-    answerDiv.appendChild(answerHTML);
-  });
-  questionHTML.appendChild(answerDiv);
-
-  // render in the HTML
-  document.querySelector("#app").appendChild(questionHTML);
-});
-
 }
 
-};
+/**
+ * Load question from API
+ */
+function loadQuestion() {
+    if (QuizState.isProcessing) return;
 
-// when the answer is selected
-selectAnswer = (e) => {
-  // removes the previous active class for the answer
-  if (document.querySelector(".active")) {
-    const activeAnswer = document.querySelector(".active");
-    activeAnswer.classList.remove("active");
-  }
-  // adds the current answer
-  e.target.classList.add("active");
-  validateAnswer();
-};
-
-// Checks if the answer is correct and 1 answer is selected
-validateAnswer = () => {
-  if (document.querySelector(".questions .active")) {
-    // everything is fine, check if the answer is correct or not
-    checkAnswer();
-  } else {
-    // error, the user didn't select anything
-    const errorDiv = document.createElement("div");
-    errorDiv.classList.add("alert", "alert-danger", "col-md-6");
-    errorDiv.textContent = "Please select 1 answer";
-    // select the questions div to insert the alert
-    const questionsDiv = document.querySelector(".questions");
-    questionsDiv.appendChild(errorDiv);
-
-    // remove the error
-    setTimeout(() => {
-      document.querySelector(".alert-danger").remove();
-    }, 3000);
-  }
-};
-
-// check if the answer is correct or not
-checkAnswer = () => {
-  const userAnswer = document.querySelector(".questions .active");
-
-  if (userAnswer.textContent === correctAnswer) {
-    correctNumber++;
-    // save into localstorage
-    saveIntoStorage();
-
-    // clear previous HTML
-    const app = document.querySelector("#app");
-    while (app.firstChild) {
-      app.removeChild(app.firstChild);
+    // Check if quiz is complete
+    if (QuizState.nextQuestion > QuizState.totalQuestions) {
+        showCompletionScreen();
+        return;
     }
 
-    // load a new question
-    loadQuestionJA();
-  } else {
-    incorrectNumber++;
+    const requestData = {
+        table: 'questions',
+        condition: `id = ${QuizState.nextQuestion}`,
+        culprit: 'quiz.js'
+    };
 
-    wrongAnswers.push(answer);
+    fetch(`/api/questions01/?${new URLSearchParams(requestData)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.length > 0) {
+                displayQuestion(data[0]);
+            } else {
+                console.error('No question data received');
+            }
+        })
+        .catch(error => {
+            console.error('Error loading question:', error);
+            showError('Failed to load question. Please try again.');
+        });
+}
 
-    const correctDiv = document.createElement("div");
-    correctDiv.classList.add("alert", "alert-danger", "col-md-6");
-    correctDiv.textContent = correctAnswer;
-    // select the questions div to insert the alert
-    const questionDiv = document.querySelector("#question");
-    questionDiv.appendChild(correctDiv);
+/**
+ * Display question on the card
+ */
+function displayQuestion(questionData) {
+    QuizState.currentQuestion = questionData;
+    QuizState.correctAnswer = questionData.answer_correct;
 
+    // Reset card state
+    Elements.card.classList.remove('flipped', 'correct', 'incorrect');
+
+    // Update question info
+    Elements.category.textContent = questionData.section || 'General';
+    Elements.questionNumber.textContent = questionData.ifia_number || `Q${QuizState.nextQuestion}`;
+    Elements.questionText.textContent = questionData.question;
+
+    // Create answer options
+    const answers = [
+        questionData.answer_a,
+        questionData.answer_b,
+        questionData.answer_c,
+        questionData.answer_d
+    ];
+
+    Elements.answersContainer.innerHTML = '';
+
+    answers.forEach((answer, index) => {
+        const button = document.createElement('button');
+        button.className = 'answer-option';
+        button.textContent = answer;
+        button.addEventListener('click', () => selectAnswer(button, answer));
+        Elements.answersContainer.appendChild(button);
+    });
+
+    // Update displays
+    updateProgressBar();
+    updateScoreDisplay();
+}
+
+/**
+ * Handle answer selection
+ */
+function selectAnswer(button, answer) {
+    if (QuizState.isProcessing) return;
+
+    // Remove previous selection
+    document.querySelectorAll('.answer-option').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+
+    // Mark as selected
+    button.classList.add('selected');
+
+    // Small delay for visual feedback
     setTimeout(() => {
-      document.querySelector(".alert-danger").remove();
+        checkAnswer(button, answer);
+    }, 200);
+}
 
-      // save into localstorage
-      saveIntoStorage();
+/**
+ * Check if answer is correct
+ */
+function checkAnswer(button, userAnswer) {
+    QuizState.isProcessing = true;
 
-      // clear previous HTML
-      const app = document.querySelector("#app");
-      while (app.firstChild) {
-        app.removeChild(app.firstChild);
-      }
+    const isCorrect = userAnswer === QuizState.correctAnswer;
 
-      // load a new question
-      loadQuestionJA();
-    }, 3000);
-  }
-};
+    // Get all answer buttons
+    const answerButtons = document.querySelectorAll('.answer-option');
 
-// saves correct or incorrect totals in storage
-saveIntoStorage = () => {
-  localStorage.setItem("quiz_game_correct", correctNumber);
-  localStorage.setItem("quiz_game_incorrect", incorrectNumber);
-  localStorage.setItem("quiz_nextQuestion", nextQuestion);
-  localStorage.setItem("quiz_wrong_questions", JSON.stringify(wrongAnswers));
-};
+    // Highlight correct and incorrect answers
+    answerButtons.forEach(btn => {
+        if (btn.textContent === QuizState.correctAnswer) {
+            btn.classList.add('correct');
+        }
+        if (btn === button && !isCorrect) {
+            btn.classList.add('incorrect');
+        }
+        // Disable all buttons
+        btn.disabled = true;
+        btn.style.pointerEvents = 'none';
+    });
 
-// Clears the results from storage
+    // Update score
+    if (isCorrect) {
+        QuizState.correctNumber++;
+        Elements.card.classList.add('correct');
+        Elements.resultMessage.innerHTML = '✓ Correct!';
+    } else {
+        QuizState.incorrectNumber++;
+        QuizState.wrongAnswers.push(QuizState.currentQuestion);
+        Elements.card.classList.add('incorrect');
+        Elements.resultMessage.innerHTML = '✗ Incorrect';
+    }
 
-clearResults = () => {
-  localStorage.setItem("quiz_game_correct", 0);
-  localStorage.setItem("quiz_game_incorrect", 0);
-  localStorage.setItem("quiz_nextQuestion", 1);
-  wrongAnswers = [];
-  localStorage.setItem("quiz_wrong_questions", JSON.stringify(wrongAnswers));
+    // Display correct answer on card back
+    Elements.correctAnswerDisplay.innerHTML = `
+        <strong>Correct Answer:</strong>
+        ${QuizState.correctAnswer}
+    `;
 
-  setTimeout(() => {
-    window.location.reload();
-  }, 500);
-};
+    // Update displays
+    updateScoreDisplay();
+
+    // Save progress
+    saveProgress();
+
+    // Flip card with delay for memorization (2.5 seconds)
+    setTimeout(() => {
+        Elements.card.classList.add('flipped');
+
+        // Load next question after additional delay (2.5 seconds on back)
+        setTimeout(() => {
+            QuizState.nextQuestion++;
+            QuizState.isProcessing = false;
+            saveProgress();
+            loadQuestion();
+        }, 2500);
+    }, 500);
+}
+
+/**
+ * Update score display
+ */
+function updateScoreDisplay() {
+    Elements.correctCount.textContent = QuizState.correctNumber;
+    Elements.incorrectCount.textContent = QuizState.incorrectNumber;
+
+    const answered = QuizState.correctNumber + QuizState.incorrectNumber;
+    const percentageValue = answered > 0
+        ? ((QuizState.correctNumber / answered) * 100).toFixed(1)
+        : 0;
+
+    Elements.percentage.textContent = `${percentageValue}%`;
+}
+
+/**
+ * Update progress bar
+ */
+function updateProgressBar() {
+    const progress = (QuizState.nextQuestion / QuizState.totalQuestions) * 100;
+    Elements.progressBar.style.width = `${progress}%`;
+    Elements.currentQuestionDisplay.textContent = QuizState.nextQuestion;
+    Elements.totalQuestionsDisplay.textContent = QuizState.totalQuestions;
+}
+
+/**
+ * Save progress to localStorage
+ */
+function saveProgress() {
+    localStorage.setItem('quiz_game_correct', QuizState.correctNumber);
+    localStorage.setItem('quiz_game_incorrect', QuizState.incorrectNumber);
+    localStorage.setItem('quiz_nextQuestion', QuizState.nextQuestion);
+    localStorage.setItem('quiz_wrong_questions', JSON.stringify(QuizState.wrongAnswers));
+}
+
+/**
+ * Show results modal
+ */
+function showResults() {
+    const answered = QuizState.correctNumber + QuizState.incorrectNumber;
+    const remaining = QuizState.totalQuestions - answered;
+    const percentageValue = answered > 0
+        ? ((QuizState.correctNumber / answered) * 100).toFixed(1)
+        : 0;
+
+    // Update modal content
+    document.getElementById('modal-answered').textContent = answered;
+    document.getElementById('modal-correct').textContent = QuizState.correctNumber;
+    document.getElementById('modal-incorrect').textContent = QuizState.incorrectNumber;
+    document.getElementById('modal-percentage').textContent = `${percentageValue}%`;
+
+    // Display wrong answers
+    const wrongAnswersList = document.getElementById('wrong-answers-list');
+
+    if (QuizState.wrongAnswers.length > 0) {
+        wrongAnswersList.innerHTML = '<h3>Questions to Review:</h3>';
+
+        QuizState.wrongAnswers.forEach((question) => {
+            const item = document.createElement('div');
+            item.className = 'wrong-answer-item';
+            item.innerHTML = `
+                <div class="question-id">${question.ifia_number}</div>
+                <div class="correct-ans">✓ ${question.answer_correct}</div>
+            `;
+            wrongAnswersList.appendChild(item);
+        });
+    } else {
+        wrongAnswersList.innerHTML = '<p style="text-align: center; color: #4CAF50; font-weight: 600;">Perfect! No wrong answers yet! 🎉</p>';
+    }
+
+    // Show modal
+    Elements.modal.classList.add('show');
+}
+
+/**
+ * Close results modal
+ */
+function closeModal() {
+    Elements.modal.classList.remove('show');
+}
+
+/**
+ * Confirm before clearing results
+ */
+function confirmClearResults() {
+    if (confirm('Are you sure you want to restart the quiz? All progress will be lost.')) {
+        clearResults();
+    }
+}
+
+/**
+ * Clear all results and restart
+ */
+function clearResults() {
+    QuizState.correctNumber = 0;
+    QuizState.incorrectNumber = 0;
+    QuizState.nextQuestion = 1;
+    QuizState.wrongAnswers = [];
+    QuizState.isProcessing = false;
+
+    saveProgress();
+
+    // Smooth reload
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+        window.location.reload();
+    }, 300);
+}
+
+/**
+ * Show completion screen
+ */
+function showCompletionScreen() {
+    const percentageValue = QuizState.totalQuestions > 0
+        ? ((QuizState.correctNumber / QuizState.totalQuestions) * 100).toFixed(1)
+        : 0;
+
+    Elements.cardFront.innerHTML = `
+        <div class="completion-screen">
+            <h1>🎉 Quiz Complete!</h1>
+            <div class="final-score">${percentageValue}%</div>
+            <div class="message">
+                <p>You answered all ${QuizState.totalQuestions} questions!</p>
+                <p><strong>${QuizState.correctNumber}</strong> correct, <strong>${QuizState.incorrectNumber}</strong> incorrect</p>
+                <p style="margin-top: 20px;">
+                    ${percentageValue >= 90 ? 'Outstanding! You\'re ready for the exam! 🌟' :
+                      percentageValue >= 75 ? 'Great job! Keep reviewing to perfect your knowledge. 💪' :
+                      percentageValue >= 60 ? 'Good effort! Review the questions you missed. 📚' :
+                      'Keep studying! Practice makes perfect. 💡'}
+                </p>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Show error message
+ */
+function showError(message) {
+    alert(message);
+}
+
+// Add touch event handling for better mobile experience
+let touchStartX = 0;
+let touchEndX = 0;
+
+document.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+});
+
+function handleSwipe() {
+    // Swipe gestures can be used for future features
+    const swipeThreshold = 50;
+    const diff = touchStartX - touchEndX;
+
+    if (Math.abs(diff) > swipeThreshold) {
+        // Future: Add swipe to skip or go back functionality
+    }
+}

@@ -2,34 +2,100 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Quiz Game</title>
-    <link rel="stylesheet" href="https://bootswatch.com/4/lumen/bootstrap.min.css">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#00796B">
+    <title>IFIA Exam Study</title>
     <link rel="stylesheet" href="./assets/css/style.css">
- 
 </head>
 <body>
-
-    <div class="container container-questions">
-        <div id="app" class="row"></div>
-        <div class="row justify-content-center">
-        
-            <!-- <div class="col-md-4 text-right">
-                   <a id="check-answer" href="#" class="btn btn-primary btn-lg mt-5">Check</a>
-            </div> -->
-             <div class="col-md-4 text-right">
-                   <a id="show-results" href="#" class="btn btn-green btn-lg mt-5">Show results</a>
-            </div>
-            <div class="col-md-4 text-right">
-                <a id="clear-storage" class="btn btn-danger btn-lg mt-5" >Clear Results</a>
-            </div>
+    <!-- Progress Bar -->
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+        <div id="progress-text">
+            <span id="current-question">1</span>/<span id="total-questions">514</span>
         </div>
-
     </div>
 
+    <!-- Score Display -->
+    <div id="score-container">
+        <div class="score-item correct">
+            <span class="score-label">✓</span>
+            <span id="correct-count">0</span>
+        </div>
+        <div class="score-item incorrect">
+            <span class="score-label">✗</span>
+            <span id="incorrect-count">0</span>
+        </div>
+        <div class="score-item percentage">
+            <span id="percentage">0%</span>
+        </div>
+    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Main Quiz Card -->
+    <div id="quiz-container">
+        <div id="card-container">
+            <!-- Card Front (Question) -->
+            <div id="card" class="card">
+                <div class="card-face card-front">
+                    <div id="category" class="category"></div>
+                    <div id="question-number" class="question-number"></div>
+                    <h2 id="question-text" class="question-text"></h2>
+                    <div id="answers-container" class="answers-container"></div>
+                </div>
+
+                <!-- Card Back (Result) -->
+                <div class="card-face card-back">
+                    <div id="result-message" class="result-message"></div>
+                    <div id="correct-answer-display" class="correct-answer-display"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div id="action-buttons">
+        <button id="show-results" class="btn btn-primary">
+            <span>📊</span> Results
+        </button>
+        <button id="clear-storage" class="btn btn-secondary">
+            <span>🔄</span> Restart
+        </button>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="results-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Your Progress</h2>
+                <button id="close-modal" class="close-btn">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="results-summary">
+                    <div class="summary-item">
+                        <div class="summary-label">Questions Answered</div>
+                        <div class="summary-value" id="modal-answered">0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Correct</div>
+                        <div class="summary-value correct-text" id="modal-correct">0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-label">Incorrect</div>
+                        <div class="summary-value incorrect-text" id="modal-incorrect">0</div>
+                    </div>
+                    <div class="summary-item highlight">
+                        <div class="summary-label">Score</div>
+                        <div class="summary-value" id="modal-percentage">0%</div>
+                    </div>
+                </div>
+                <div id="wrong-answers-list" class="wrong-answers-list"></div>
+            </div>
+        </div>
+    </div>
+
     <script src="./assets/js/quiz.js"></script>
 </body>
 </html>
